@@ -13,8 +13,8 @@
 
 1. Install the latest [.NET 7 SDK](https://dotnet.microsoft.com/download/dotnet/7.0)
 2. Install the latest [Node.js LTS](https://nodejs.org/en/)
-3a. Navigate to `src/WebUI` and launch the project using `dotnet run`
-3b. OR in Visual studio just press F5 to run the solution.
+3. Navigate to `src/WebUI` and launch the project using `dotnet run`
+4. OR in Visual studio just press F5 to run the solution.
 
 ### Database Configuration
 
@@ -46,5 +46,5 @@ https://www.loom.com/share/77b5cd4fadac4bbab6fb479dcf08272c
 
 # Default credentials seeded
 
-Admin: administrator@localhost/Administrator1!
-User: jason@localhost/User1!
+1. Admin: administrator@localhost/Administrator1!
+2. User: jason@localhost/User1!
