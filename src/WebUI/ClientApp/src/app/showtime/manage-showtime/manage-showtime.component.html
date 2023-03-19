@@ -1,0 +1,71 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Add Show Time!</h1>
+        </div>
+        <div class="col-sm-6 text-end">
+            <button class="btn btn-primary" [routerLink]="['/showtime']">Back</button>
+        </div>
+    </div>
+
+    <div class="row adjust-showtimes">
+        <div class="col-md-6">
+            <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="datetime" class="form-label">Datetime:</label>
+                    <input type="datetime-local" id="datetime" formControlName="datetime" class="form-control" [(ngModel)]="showtimeDto.dateTime">
+                    <div *ngIf="myForm.get('datetime').invalid && (myForm.get('datetime').dirty || myForm.get('datetime').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('datetime').errors.required">
+                            Date time is required.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" id="price" formControlName="price" class="form-control" [(ngModel)]="showtimeDto.price">
+                    <div *ngIf="myForm.get('price').invalid && (myForm.get('price').dirty || myForm.get('price').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('price').errors.required">
+                            Price is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="movies" class="form-label">Movies:</label>
+                    <select id="movies" formControlName="movieId" class="form-select" [(ngModel)]="showtimeDto.movieId">
+                        <option value="">Select a movie</option>
+                        <option *ngFor="let movie of movies$ | async" value="{{movie.id}}" >{{movie.title}}</option>
+                    </select>
+                    <div *ngIf="myForm.get('movieId').invalid && (myForm.get('movieId').dirty || myForm.get('movieId').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('movieId').errors.required">
+                            Please select a movie.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="theatre" class="form-label">Theatre:</label>
+                    <select id="theatre" formControlName="theatreId" class="form-select" [(ngModel)]="showtimeDto.theatreId">
+                        <option value="">Select a theatre</option>
+                        <option *ngFor="let theatre of theatres$ | async" value="{{theatre.id}}" >{{theatre.name}}</option>
+                    </select>
+                    <div *ngIf="myForm.get('theatreId').invalid && (myForm.get('theatreId').dirty || myForm.get('theatreId').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('theatreId').errors.required">
+                            Please select a theatre.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <button type="submit" [disabled]="!myForm.valid" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+            </form>
+        </div>
+    </div>
+</div>

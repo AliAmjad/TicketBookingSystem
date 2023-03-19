@@ -374,6 +374,194 @@ export class MovieClient implements IMovieClient {
     }
 }
 
+export interface IShowTimeClient {
+    get(): Observable<ShowTimeDto[]>;
+    create(command: CreateShowTimeCommand): Observable<number>;
+    update(id: number, command: UpdateShowTimeCommand): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ShowTimeClient implements IShowTimeClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(): Observable<ShowTimeDto[]> {
+        let url_ = this.baseUrl + "/api/ShowTime";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ShowTimeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ShowTimeDto[]>;
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<ShowTimeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ShowTimeDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    create(command: CreateShowTimeCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/ShowTime";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    update(id: number, command: UpdateShowTimeCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/ShowTime/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+}
+
 export interface ITheatreClient {
     get(): Observable<TheatreDto[]>;
     create(command: CreateTheatreCommand): Observable<number>;
@@ -1579,6 +1767,166 @@ export interface IUpdateMovieCommand {
     description?: string | undefined;
     releaseDate?: Date;
     image?: string | undefined;
+}
+
+export class ShowTimeDto implements IShowTimeDto {
+    id?: number;
+    dateTime?: Date;
+    price?: number;
+    movieTitle?: string | undefined;
+    theatreName?: string | undefined;
+    movieId?: number;
+    theatreId?: number;
+
+    constructor(data?: IShowTimeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.dateTime = _data["dateTime"] ? new Date(_data["dateTime"].toString()) : <any>undefined;
+            this.price = _data["price"];
+            this.movieTitle = _data["movieTitle"];
+            this.theatreName = _data["theatreName"];
+            this.movieId = _data["movieId"];
+            this.theatreId = _data["theatreId"];
+        }
+    }
+
+    static fromJS(data: any): ShowTimeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShowTimeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["dateTime"] = this.dateTime ? this.dateTime.toISOString() : <any>undefined;
+        data["price"] = this.price;
+        data["movieTitle"] = this.movieTitle;
+        data["theatreName"] = this.theatreName;
+        data["movieId"] = this.movieId;
+        data["theatreId"] = this.theatreId;
+        return data;
+    }
+}
+
+export interface IShowTimeDto {
+    id?: number;
+    dateTime?: Date;
+    price?: number;
+    movieTitle?: string | undefined;
+    theatreName?: string | undefined;
+    movieId?: number;
+    theatreId?: number;
+}
+
+export class CreateShowTimeCommand implements ICreateShowTimeCommand {
+    dateTime?: Date;
+    price?: number;
+    movieId?: number;
+    theatreId?: number;
+
+    constructor(data?: ICreateShowTimeCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dateTime = _data["dateTime"] ? new Date(_data["dateTime"].toString()) : <any>undefined;
+            this.price = _data["price"];
+            this.movieId = _data["movieId"];
+            this.theatreId = _data["theatreId"];
+        }
+    }
+
+    static fromJS(data: any): CreateShowTimeCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateShowTimeCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dateTime"] = this.dateTime ? this.dateTime.toISOString() : <any>undefined;
+        data["price"] = this.price;
+        data["movieId"] = this.movieId;
+        data["theatreId"] = this.theatreId;
+        return data;
+    }
+}
+
+export interface ICreateShowTimeCommand {
+    dateTime?: Date;
+    price?: number;
+    movieId?: number;
+    theatreId?: number;
+}
+
+export class UpdateShowTimeCommand implements IUpdateShowTimeCommand {
+    id?: number;
+    dateTime?: Date;
+    price?: number;
+    movieId?: number;
+    theatreId?: number;
+
+    constructor(data?: IUpdateShowTimeCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.dateTime = _data["dateTime"] ? new Date(_data["dateTime"].toString()) : <any>undefined;
+            this.price = _data["price"];
+            this.movieId = _data["movieId"];
+            this.theatreId = _data["theatreId"];
+        }
+    }
+
+    static fromJS(data: any): UpdateShowTimeCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateShowTimeCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["dateTime"] = this.dateTime ? this.dateTime.toISOString() : <any>undefined;
+        data["price"] = this.price;
+        data["movieId"] = this.movieId;
+        data["theatreId"] = this.theatreId;
+        return data;
+    }
+}
+
+export interface IUpdateShowTimeCommand {
+    id?: number;
+    dateTime?: Date;
+    price?: number;
+    movieId?: number;
+    theatreId?: number;
 }
 
 export class TheatreDto implements ITheatreDto {

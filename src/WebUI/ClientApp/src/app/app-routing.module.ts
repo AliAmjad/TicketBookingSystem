@@ -11,6 +11,8 @@ import { ManageMovieComponent } from './movie/manage-movie/manage-movie.componen
 import { TheatreComponent } from './theatre/theatre.component';
 import { ManageTheatreComponent } from './theatre/manage-theatre/manage-theatre.component';
 import { BookingComponent } from './booking/booking.component';
+import { ShowtimeComponent } from './showtime/showtime.component';
+import { ManageShowtimeComponent } from './showtime/manage-showtime/manage-showtime.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -20,6 +22,9 @@ export const routes: Routes = [
   { path: 'theatre', component: TheatreComponent },
   { path: 'theatre/manage', component: ManageTheatreComponent, canActivate: [AuthorizeGuard] },
   { path: 'theatre/manage/:id', component: ManageTheatreComponent, canActivate: [AuthorizeGuard] },
+  { path: 'showtime', component: ShowtimeComponent },
+  { path: 'showtime/manage', component: ManageShowtimeComponent, canActivate: [AuthorizeGuard] },
+  { path: 'showtime/manage/:id', component: ManageShowtimeComponent, canActivate: [AuthorizeGuard] },
   { path: 'booking', component: BookingComponent },
   { path: 'token', component: TokenComponent, canActivate: [AuthorizeGuard] }
 ];

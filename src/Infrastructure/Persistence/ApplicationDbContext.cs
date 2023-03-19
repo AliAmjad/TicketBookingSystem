@@ -35,6 +35,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<Theatre> Theatres => Set<Theatre>();
 
+    public DbSet<ShowTime> ShowTimes => Set<ShowTime>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

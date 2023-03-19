@@ -23,6 +23,8 @@ import { ManageMovieComponent } from './movie/manage-movie/manage-movie.componen
 import { TheatreComponent } from './theatre/theatre.component';
 import { ManageTheatreComponent } from './theatre/manage-theatre/manage-theatre.component';
 import { BookingComponent } from './booking/booking.component';
+import { ShowtimeComponent } from './showtime/showtime.component';
+import { ManageShowtimeComponent } from './showtime/manage-showtime/manage-showtime.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { BookingComponent } from './booking/booking.component';
     ManageMovieComponent,
     TheatreComponent,
     ManageTheatreComponent,
-    BookingComponent
+    BookingComponent,
+    ShowtimeComponent,
+    ManageShowtimeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
