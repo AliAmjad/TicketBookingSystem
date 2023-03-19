@@ -9,5 +9,9 @@ public interface IApplicationDbContext
 
     DbSet<TodoItem> TodoItems { get; }
 
+    DbSet<Domain.Entities.Movie> Movies { get; }
+
+    DbSet<Domain.Entities.Theatre> Theatres { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

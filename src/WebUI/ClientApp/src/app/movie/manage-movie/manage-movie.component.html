@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-sm-6">
+        <h1>{{op}} Movie!</h1>
+    </div>
+    <div class="col-sm-6 text-end">
+        <button class="btn btn-primary" [routerLink]="['/movie']">Back</button>
+    </div>
+</div>
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="image">Upload Image:</label><br/>
+                    <input type="file" (change)="onFileChange($event)" class="form-control-file" id="image"
+                        formControlName="image" accept="image/*">
+                    <img [src]="imagePreview" *ngIf="imagePreview" class="mt-3"
+                        style="max-width: 100%; max-height: 300px;">
+                    <div *ngIf="myForm.get('image').invalid && (myForm.get('image').dirty || myForm.get('image').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('image').errors.required">
+                            Image is required.
+                        </div>
+                        <div *ngIf="myForm.get('image').errors.maxSize">
+                            Image size should be less than {{maxImageSize / 1024 / 1024}} MB.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" formControlName="title" [(ngModel)]="movieDto.title"
+                        typeaheadOptionField="Title"
+                        [typeahead]="suggestions$"
+                        [typeaheadAsync]="true">
+                    <div *ngIf="myForm.get('title').invalid && (myForm.get('title').dirty || myForm.get('title').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('title').errors.required">
+                            Title is required.
+                        </div>
+                        <div *ngIf="myForm.get('title').errors.minlength">
+                            Title should be at least {{myForm.get('title').errors.minlength.requiredLength}} characters
+                            long.
+                        </div>
+                        <div *ngIf="myForm.get('title').errors.maxlength">
+                            Title should be less than {{myForm.get('title').errors.maxlength.requiredLength}} characters
+                            long.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3" formControlName="description" [(ngModel)]="movieDto.description"></textarea>
+                    <div *ngIf="myForm.get('description').invalid && (myForm.get('description').dirty || myForm.get('description').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('description').errors.required">
+                            Description is required.
+                        </div>
+                        <div *ngIf="myForm.get('description').errors.minlength">
+                            Description should be at least {{myForm.get('description').errors.minlength.requiredLength}}
+                            characters long.
+                        </div>
+                        <div *ngIf="myForm.get('description').errors.maxlength">
+                            Description should be less than
+                            {{myForm.get('description').errors.maxlength.requiredLength}} characters long.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="release-date">Release Date {{movieDto.releaseDate ? movieDto.releaseDate : ''}}</label>
+                    <input type="date" class="form-control" id="release-date" formControlName="releaseDate" [(ngModel)]="movieDto.releaseDate">
+                    <div *ngIf="myForm.get('releaseDate').invalid && (myForm.get('releaseDate').dirty || myForm.get('releaseDate').touched)"
+                        class="alert alert-danger mt-2">
+                        <div *ngIf="myForm.get('releaseDate').errors.required">
+                            Release Date is required.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid">Submit</button>
+                <button type="reset" class="btn btn-default" (click)="imagePreview = null;">Reset</button>
+            </form>
+        </div>
+    </div>
+</div>

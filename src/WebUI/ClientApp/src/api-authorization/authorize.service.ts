@@ -31,6 +31,7 @@ export enum AuthenticationResultStatus {
 
 export interface IUser {
   name?: string;
+  sub?: string;
 }
 
 @Injectable({
@@ -45,7 +46,9 @@ export class AuthorizeService {
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject<IUser | null>(null);
 
   public isAuthenticated(): Observable<boolean> {
-    return this.getUser().pipe(map(u => !!u));
+    return this.getUser().pipe(
+      map(u => !!u)
+    );
   }
 
   public getUser(): Observable<IUser | null> {

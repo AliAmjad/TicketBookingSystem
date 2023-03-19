@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-sm-6">
+        <h1>Movies!</h1>
+    </div>
+    <div class="col-sm-6 text-end" *ngIf="(userInfo$ | async)?.isAdmin">
+        <button class="btn btn-primary" [routerLink]="['/movie/manage']">Add</button>
+    </div>
+</div>
+
+<div class="container adjust-movies">
+    <h3 *ngIf="!(movies$ | async)?.length">No movies found.</h3>
+</div>
+
+<div class="container adjust-movies">
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let movie of movies$ | async">
+            <div class="card mb-3">
+                <img class="card-img-top img-fluid" 
+                [src]="movie.image"
+                alt="{{ movie.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.description }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted"><span>Release Date:</span> {{ movie.releaseDate | date:'MMMM d, y' }}</small>
+                </div>
+                <div class="card-footer" *ngIf="(userInfo$ | async)?.isAdmin">
+                    <div class="text-center">
+                        <button class="btn btn-primary" [routerLink]="['/movie/manage/', movie.id]">Edit</button> | 
+                        <button class="btn btn-danger" (click)="deleteMovie(movie.id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

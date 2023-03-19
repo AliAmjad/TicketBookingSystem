@@ -54,15 +54,19 @@ public class ApplicationDbContextInitialiser
     {
         // Default roles
         var administratorRole = new IdentityRole("Administrator");
-
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
         }
 
+        var userRole = new IdentityRole("User");
+        if (_roleManager.Roles.All(r => r.Name != userRole.Name))
+        {
+            await _roleManager.CreateAsync(userRole);
+        }
+
         // Default users
         var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
             await _userManager.CreateAsync(administrator, "Administrator1!");
@@ -72,23 +76,33 @@ public class ApplicationDbContextInitialiser
             }
         }
 
+        var user = new ApplicationUser { UserName = "jason@localhost", Email = "jason@localhost" };
+        if (_userManager.Users.All(u => u.UserName != user.UserName))
+        {
+            await _userManager.CreateAsync(user, "User1!");
+            if (!string.IsNullOrWhiteSpace(userRole.Name))
+            {
+                await _userManager.AddToRolesAsync(user, new[] { userRole.Name });
+            }
+        }
+
         // Default data
         // Seed, if necessary
-        if (!_context.TodoLists.Any())
-        {
-            _context.TodoLists.Add(new TodoList
-            {
-                Title = "Todo List",
-                Items =
-                {
-                    new TodoItem { Title = "Make a todo list 📃" },
-                    new TodoItem { Title = "Check off the first item ✅" },
-                    new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
-                    new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
-                }
-            });
+        //if (!_context.TodoLists.Any())
+        //{
+        //    _context.TodoLists.Add(new TodoList
+        //    {
+        //        Title = "Todo List",
+        //        Items =
+        //        {
+        //            new TodoItem { Title = "Make a todo list 📃" },
+        //            new TodoItem { Title = "Check off the first item ✅" },
+        //            new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
+        //            new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
+        //        }
+        //    });
 
-            await _context.SaveChangesAsync();
-        }
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }

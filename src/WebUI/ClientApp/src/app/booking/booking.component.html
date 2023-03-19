@@ -1,0 +1,59 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Ticket Booking</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Matrix</td>
+                        <td>$19.99</td>
+                        <td><input type="number" value="1" class="form-control"></td>
+                        <td>$19.99</td>
+                        <td><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                    <tr>
+                        <td>Avatar</td>
+                        <td>$29.99</td>
+                        <td><input type="number" value="1" class="form-control"></td>
+                        <td>$29.99</td>
+                        <td><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-end">Total</td>
+                        <td>$49.98</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Checkout</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea id="address" class="form-control"></textarea>
+                </div>
+                <button class="btn btn-primary">Place Order</button>
+            </form>
+        </div>
+    </div>
+</div>
