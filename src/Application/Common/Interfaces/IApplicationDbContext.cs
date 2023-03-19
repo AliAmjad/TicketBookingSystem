@@ -13,5 +13,7 @@ public interface IApplicationDbContext
 
     DbSet<Domain.Entities.Theatre> Theatres { get; }
 
+    DbSet<Domain.Entities.ShowTime> ShowTimes { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
