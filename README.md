@@ -44,7 +44,7 @@ This layer is a single page application based on Angular 14 and ASP.NET Core 7. 
 
 https://www.loom.com/share/77b5cd4fadac4bbab6fb479dcf08272c
 
-# Default credentials seeded
+## Default credentials seeded
 
 1. Admin: administrator@localhost/Administrator1!
 2. User: jason@localhost/User1!
